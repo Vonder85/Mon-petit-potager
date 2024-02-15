@@ -12,3 +12,8 @@ export enum MOIS {
   NOVEMBRE = "Nov",
   DECEMBRE = "Déc",
 }
+
+export interface Categorie {
+  id: string;
+  libelle: string;
+}

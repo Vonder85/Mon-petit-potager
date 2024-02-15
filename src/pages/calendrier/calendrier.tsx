@@ -2,7 +2,7 @@ import { Box, Button, ButtonGroup, Theme } from "@mui/material";
 import { pxToRem } from "../../config/theme/utilities";
 import { makeStyles } from "tss-react/mui";
 import { useState } from "react";
-import { MOIS } from "../../models/Calendrier";
+import { Categorie, MOIS } from "../../models/Calendrier";
 
 const useStyles = makeStyles()((theme: Theme) => {
   return {
@@ -45,6 +45,7 @@ const useStyles = makeStyles()((theme: Theme) => {
       marginLeft: "auto",
     },
     buttonSelected: {
+      color: theme.palette.primary.main,
       "&:hover": {
         cursor: "default",
         backgroundColor: theme.palette.secondary.main,
@@ -55,21 +56,23 @@ const useStyles = makeStyles()((theme: Theme) => {
 
 export const Calendrier = () => {
   const { classes } = useStyles();
-  const families = [
+  const categories: Categorie[] = [
     {
       id: "legumes",
-      label: "Légumes",
+      libelle: "Légumes",
     },
     {
       id: "aromatiques",
-      label: "Plantes aromatiques",
+      libelle: "Plantes aromatiques",
     },
   ];
-  const [familySelected, setFamilySelected] = useState("legumes");
-  const [moisSelected, setMoisSelected] = useState<MOIS | undefined>();
+  const [categorieSelected, setCategorieSelected] = useState("legumes");
+  const [moisSelected, setMoisSelected] = useState<MOIS | undefined>(
+    MOIS.JANVIER
+  );
 
-  const isSelected = (mois: string): boolean => {
-    return moisSelected === mois;
+  const isSelected = (categorie: string): boolean => {
+    return moisSelected === categorie || categorie === categorieSelected;
   };
 
   return (
@@ -89,12 +92,14 @@ export const Calendrier = () => {
           variant='contained'
           className={classes.buttonGroup}
         >
-          {families.map((family: any) => (
+          {categories.map((categorie: Categorie) => (
             <Button
-              key={family.id}
-              color={familySelected === family.id ? "primary" : "secondary"}
+              key={categorie.id}
+              color={isSelected(categorie.id) ? "secondary" : "primary"}
+              onClick={() => setCategorieSelected(categorie.id)}
+              className={isSelected(categorie.id) ? classes.buttonSelected : ""}
             >
-              <span>{family.label}</span>
+              <span>{categorie.libelle}</span>
             </Button>
           ))}
         </ButtonGroup>

@@ -1,53 +1,53 @@
-import { Box, Button, ButtonGroup, Theme } from "@mui/material";
-import { pxToRem } from "../../config/theme/utilities";
-import { makeStyles } from "tss-react/mui";
-import { useState } from "react";
-import { Categorie, MOIS } from "../../models/Calendrier";
+import { Box, Button, ButtonGroup, Theme } from '@mui/material';
+import { pxToRem } from '../../config/theme/utilities';
+import { makeStyles } from 'tss-react/mui';
+import { useState } from 'react';
+import { Categorie, MOIS } from '../../models/Calendrier';
 
 const useStyles = makeStyles()((theme: Theme) => {
   return {
     grid: {
-      display: "grid",
-      width: "100%",
+      display: 'grid',
+      width: '100%',
       gridTemplateAreas: `
       ".  header"
       "nav calendrier"
       "nav calendrier"`,
-      gridTemplateColumns: "20% 1fr",
-      marginTop: "3rem",
+      gridTemplateColumns: '20% 1fr',
+      marginTop: '3rem',
     },
     header: {
-      gridArea: "header",
-      textAlign: "center",
+      gridArea: 'header',
+      textAlign: 'center',
     },
     buttons: {
-      gridArea: "nav",
-      marginRight: "auto",
-      marginLeft: "auto",
+      gridArea: 'nav',
+      marginRight: 'auto',
+      marginLeft: 'auto',
     },
     buttonGroup: {
       border: `${pxToRem(2)} solid`,
       borderRadius: pxToRem(22),
       color: theme.palette.primary.main,
-      boxShadow: "initial",
+      boxShadow: 'initial',
 
-      "& button": {
+      '& button': {
         borderRadius: pxToRem(19),
-        height: "100%",
+        height: '100%',
       },
-      "& .MuiButton-containedSecondary": {
-        boxShadow: "inherit",
+      '& .MuiButton-containedSecondary': {
+        boxShadow: 'inherit',
       },
     },
     calendrier: {
-      gridArea: "calendrier",
-      marginRight: "auto",
-      marginLeft: "auto",
+      gridArea: 'calendrier',
+      marginRight: 'auto',
+      marginLeft: 'auto',
     },
     buttonSelected: {
       color: theme.palette.primary.main,
-      "&:hover": {
-        cursor: "default",
+      '&:hover': {
+        cursor: 'default',
         backgroundColor: theme.palette.secondary.main,
       },
     },
@@ -58,18 +58,16 @@ export const Calendrier = () => {
   const { classes } = useStyles();
   const categories: Categorie[] = [
     {
-      id: "legumes",
-      libelle: "Légumes",
+      id: 'legumes',
+      libelle: 'Légumes',
     },
     {
-      id: "aromatiques",
-      libelle: "Plantes aromatiques",
+      id: 'aromatiques',
+      libelle: 'Plantes aromatiques',
     },
   ];
-  const [categorieSelected, setCategorieSelected] = useState("legumes");
-  const [moisSelected, setMoisSelected] = useState<MOIS | undefined>(
-    MOIS.JANVIER
-  );
+  const [categorieSelected, setCategorieSelected] = useState('legumes');
+  const [moisSelected, setMoisSelected] = useState<MOIS | undefined>(MOIS.JANVIER);
 
   const isSelected = (categorie: string): boolean => {
     return moisSelected === categorie || categorie === categorieSelected;
@@ -79,25 +77,25 @@ export const Calendrier = () => {
     <div className={classes.grid}>
       <Box
         sx={{
-          display: "flex",
-          "& > *": {
+          display: 'flex',
+          '& > *': {
             m: 1,
           },
         }}
         className={classes.buttons}
       >
         <ButtonGroup
-          orientation='vertical'
-          aria-label='vertical contained button group'
-          variant='contained'
+          orientation="vertical"
+          aria-label="vertical contained button group"
+          variant="contained"
           className={classes.buttonGroup}
         >
           {categories.map((categorie: Categorie) => (
             <Button
               key={categorie.id}
-              color={isSelected(categorie.id) ? "secondary" : "primary"}
+              color={isSelected(categorie.id) ? 'secondary' : 'primary'}
               onClick={() => setCategorieSelected(categorie.id)}
-              className={isSelected(categorie.id) ? classes.buttonSelected : ""}
+              className={isSelected(categorie.id) ? classes.buttonSelected : ''}
             >
               <span>{categorie.libelle}</span>
             </Button>
@@ -108,16 +106,12 @@ export const Calendrier = () => {
         <h1>Calendrier</h1>
       </header>
       <div className={classes.calendrier}>
-        <ButtonGroup
-          variant='contained'
-          aria-label="Mois de l'année"
-          className={classes.buttonGroup}
-        >
+        <ButtonGroup variant="contained" aria-label="Mois de l'année" className={classes.buttonGroup}>
           {Object.values(MOIS).map((mois) => (
             <Button
               onClick={() => setMoisSelected(mois)}
-              className={isSelected(mois) ? classes.buttonSelected : ""}
-              color={isSelected(mois) ? "secondary" : "primary"}
+              className={isSelected(mois) ? classes.buttonSelected : ''}
+              color={isSelected(mois) ? 'secondary' : 'primary'}
             >
               {mois}
             </Button>

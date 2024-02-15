@@ -1,0 +1,59 @@
+@import '../../config/theme/utilities.scss';
+
+.navbar-container {
+    height: var(--header-height);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #566C56;
+    padding: 1rem 8rem;
+    color: #F9F6F6;
+}
+
+.left-section {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    width: rem(40);
+    height: rem(40);
+    margin-right: rem(10);
+}
+
+.title {
+    font-size: 1.2em;
+}
+
+.right-section {
+    margin-right: 3rem;
+}
+
+.search-bar {
+    padding: rem(8);
+    margin-right: rem(10);
+    border: none;
+    border-radius: rem(5);
+    width: 21rem;
+    box-sizing: border-box;
+    background-color: #F9F6F6;
+    outline-color: #566C56;
+}
+
+.nav-buttons {
+    display: flex;
+}
+
+.nav-button {
+    padding: rem(8) rem(12);
+    margin-right: rem(10);
+    background-color: #334c33;
+    color: white;
+    border: none;
+    border-radius: rem(5);
+    cursor: pointer;
+}
+
+.nav-button:last-child {
+    margin-right: 0;
+}

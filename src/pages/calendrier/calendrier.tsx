@@ -2,6 +2,7 @@ import { Box, Button, ButtonGroup, Theme } from "@mui/material";
 import { pxToRem } from "../../config/theme/utilities";
 import { makeStyles } from "tss-react/mui";
 import { useState } from "react";
+import { MOIS } from "../../models/Calendrier";
 
 const useStyles = makeStyles()((theme: Theme) => {
   return {
@@ -40,6 +41,14 @@ const useStyles = makeStyles()((theme: Theme) => {
     },
     calendrier: {
       gridArea: "calendrier",
+      marginRight: "auto",
+      marginLeft: "auto",
+    },
+    buttonSelected: {
+      "&:hover": {
+        cursor: "default",
+        backgroundColor: theme.palette.secondary.main,
+      },
     },
   };
 });
@@ -57,6 +66,11 @@ export const Calendrier = () => {
     },
   ];
   const [familySelected, setFamilySelected] = useState("legumes");
+  const [moisSelected, setMoisSelected] = useState<MOIS | undefined>();
+
+  const isSelected = (mois: string): boolean => {
+    return moisSelected === mois;
+  };
 
   return (
     <div className={classes.grid}>
@@ -89,7 +103,21 @@ export const Calendrier = () => {
         <h1>Calendrier</h1>
       </header>
       <div className={classes.calendrier}>
-        <span>TOTO</span>
+        <ButtonGroup
+          variant='contained'
+          aria-label="Mois de l'année"
+          className={classes.buttonGroup}
+        >
+          {Object.values(MOIS).map((mois) => (
+            <Button
+              onClick={() => setMoisSelected(mois)}
+              className={isSelected(mois) ? classes.buttonSelected : ""}
+              color={isSelected(mois) ? "secondary" : "primary"}
+            >
+              {mois}
+            </Button>
+          ))}
+        </ButtonGroup>
       </div>
     </div>
   );

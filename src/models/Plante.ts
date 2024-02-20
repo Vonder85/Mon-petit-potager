@@ -7,23 +7,23 @@ export interface Legume {
 }
 
 interface CalendrierLegume {
-  janvier: ETAPE_CALENDRIER | null;
-  février: ETAPE_CALENDRIER | null;
-  mars: ETAPE_CALENDRIER | null;
-  avril: ETAPE_CALENDRIER | null;
-  mai: ETAPE_CALENDRIER | null;
-  juin: ETAPE_CALENDRIER | null;
-  juillet: ETAPE_CALENDRIER | null;
-  août: ETAPE_CALENDRIER | null;
-  septembre: ETAPE_CALENDRIER | null;
-  octobre: ETAPE_CALENDRIER | null;
-  novembre: ETAPE_CALENDRIER | null;
-  décembre: ETAPE_CALENDRIER | null;
+  Jan?: ETAPE_CALENDRIER[] | null;
+  Fev?: ETAPE_CALENDRIER[] | null;
+  Mar?: ETAPE_CALENDRIER[] | null;
+  Avr?: ETAPE_CALENDRIER[] | null;
+  Mai?: ETAPE_CALENDRIER[] | null;
+  Jui?: ETAPE_CALENDRIER[] | null;
+  Juil?: ETAPE_CALENDRIER[] | null;
+  Aou?: ETAPE_CALENDRIER[] | null;
+  Sep?: ETAPE_CALENDRIER[] | null;
+  Oct?: ETAPE_CALENDRIER[] | null;
+  Nov?: ETAPE_CALENDRIER[] | null;
+  Dec?: ETAPE_CALENDRIER[] | null;
 }
 
-enum ETAPE_CALENDRIER {
-  SEMIS_SOUS_ABRI = "semis sous abri",
-  SEMIS_PLEINE_TERRE = "semis pleine terre",
-  PLANTATION = "plantation",
-  RECOLTE = "récolte",
+export enum ETAPE_CALENDRIER {
+  SEMIS_EN_POT = 'semis en pot',
+  SEMIS_PLEINE_TERRE = 'semis pleine terre',
+  PLANTATION = 'plantation',
+  RECOLTE = 'récolte',
 }

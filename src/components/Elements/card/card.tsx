@@ -1,32 +1,41 @@
-import {
-  CardActionArea,
-  CardContent,
-  CardMedia,
-  Typography,
-} from "@mui/material";
-import Card from "@mui/material/Card";
+import { CardActionArea, CardContent, CardMedia, Icon, Typography } from '@mui/material';
+import Card from '@mui/material/Card';
+import ImageIcon from '@mui/icons-material/Image';
+import { makeStyles } from 'tss-react/mui';
+import { pxToRem } from '../../../config/theme/utilities';
 
 interface CardProps {
-  content: string;
+  content: JSX.Element;
   title: string;
   image?: string;
+  className?: string;
 }
 
-export const CardComponent = ({ content, image, title }: CardProps) => {
+const useStyles = makeStyles()(() => {
+  return {
+    image: {
+      textAlign: 'center',
+    },
+  };
+});
+
+export const CardComponent = ({ className, content, image, title }: CardProps) => {
+  const { classes } = useStyles();
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: 345 }} className={className}>
       <CardActionArea>
-        <CardMedia
-          component="img"
-          height="140"
-          image={image ?? "/static/images/cards/contemplative-reptile.jpg"}
-          alt="green iguana"
-        />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
+          <Typography variant="h5" component="div" textAlign={'center'}>
             {title}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+          <div className={classes.image}>
+            {image ? (
+              <CardMedia component="img" height="140" image={image} alt="image legume" />
+            ) : (
+              <Icon component={ImageIcon} sx={{ fontSize: pxToRem(100) }} />
+            )}
+          </div>
+          <Typography variant="body2" color="text.primary">
             {content}
           </Typography>
         </CardContent>

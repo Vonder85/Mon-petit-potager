@@ -1,8 +1,10 @@
 import { Box, Button, ButtonGroup, Theme } from '@mui/material';
 import { pxToRem } from '../../config/theme/utilities';
 import { makeStyles } from 'tss-react/mui';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Categorie, MOIS } from '../../models/Calendrier';
+import { CalendrierCard } from '../../components/Elements/card/calendrierCard';
+import { ETAPE_CALENDRIER, Legume } from '../../models/Plante';
 
 const useStyles = makeStyles()((theme: Theme) => {
   return {
@@ -12,7 +14,7 @@ const useStyles = makeStyles()((theme: Theme) => {
       gridTemplateAreas: `
       ".  header"
       "nav calendrier"
-      "nav calendrier"`,
+      ". calendrier"`,
       gridTemplateColumns: '20% 1fr',
       marginTop: '3rem',
     },
@@ -33,7 +35,6 @@ const useStyles = makeStyles()((theme: Theme) => {
 
       '& button': {
         borderRadius: pxToRem(19),
-        height: '100%',
       },
       '& .MuiButton-containedSecondary': {
         boxShadow: 'inherit',
@@ -51,6 +52,13 @@ const useStyles = makeStyles()((theme: Theme) => {
         backgroundColor: theme.palette.secondary.main,
       },
     },
+    resultats: {
+      marginTop: '2rem',
+      rowGap: '2rem',
+      display: 'flex',
+      flexFlow: 'row wrap',
+      justifyContent: 'space-around',
+    },
   };
 });
 
@@ -67,10 +75,60 @@ export const Calendrier = () => {
     },
   ];
   const [categorieSelected, setCategorieSelected] = useState('legumes');
-  const [moisSelected, setMoisSelected] = useState<MOIS | undefined>(MOIS.JANVIER);
+  const [moisSelected, setMoisSelected] = useState<MOIS>(MOIS.FEVRIER);
+  const [legume, setLegumes] = useState<Legume[]>([]);
+  const [data, setData] = useState<Legume[]>([
+    {
+      id: '1',
+      description: "L'aubergine est un légume violet",
+      nom: 'Aubergine',
+      calendrier: {
+        Jan: [ETAPE_CALENDRIER.SEMIS_EN_POT, ETAPE_CALENDRIER.SEMIS_PLEINE_TERRE],
+        Mar: [ETAPE_CALENDRIER.PLANTATION, ETAPE_CALENDRIER.RECOLTE],
+      },
+    },
+    {
+      id: '2',
+      description: 'La courgette est un légume vert',
+      nom: 'Courgette',
+      calendrier: {
+        Fev: [ETAPE_CALENDRIER.SEMIS_EN_POT],
+        Mar: [ETAPE_CALENDRIER.PLANTATION, ETAPE_CALENDRIER.RECOLTE],
+      },
+    },
+    {
+      id: '3',
+      description: 'La courgette est un légume vert',
+      nom: 'Courgette',
+      calendrier: {
+        Fev: [ETAPE_CALENDRIER.SEMIS_EN_POT],
+        Mar: [ETAPE_CALENDRIER.PLANTATION, ETAPE_CALENDRIER.RECOLTE],
+        Mai: [ETAPE_CALENDRIER.SEMIS_EN_POT],
+      },
+    },
+    {
+      id: '4',
+      description: 'La courgette est un légume vert',
+      nom: 'Courgette',
+      calendrier: {
+        Fev: [ETAPE_CALENDRIER.SEMIS_EN_POT],
+        Mar: [ETAPE_CALENDRIER.PLANTATION, ETAPE_CALENDRIER.RECOLTE],
+        Mai: [ETAPE_CALENDRIER.SEMIS_EN_POT],
+      },
+    },
+  ]);
 
   const isSelected = (categorie: string): boolean => {
     return moisSelected === categorie || categorie === categorieSelected;
+  };
+
+  useEffect(() => {
+    setLegumes(data.filter((l) => l.calendrier && l.calendrier[moisSelected!]?.length! > 0));
+  }, [moisSelected]);
+
+  const onChangeMois = (mois: MOIS) => {
+    setMoisSelected(mois);
+    setLegumes(data.filter((l) => l.calendrier && l.calendrier[mois!]?.length! > 0));
   };
 
   return (
@@ -84,12 +142,7 @@ export const Calendrier = () => {
         }}
         className={classes.buttons}
       >
-        <ButtonGroup
-          orientation="vertical"
-          aria-label="vertical contained button group"
-          variant="contained"
-          className={classes.buttonGroup}
-        >
+        <ButtonGroup orientation="vertical" aria-label="Catégories" variant="contained" className={classes.buttonGroup}>
           {categories.map((categorie: Categorie) => (
             <Button
               key={categorie.id}
@@ -109,7 +162,7 @@ export const Calendrier = () => {
         <ButtonGroup variant="contained" aria-label="Mois de l'année" className={classes.buttonGroup}>
           {Object.values(MOIS).map((mois) => (
             <Button
-              onClick={() => setMoisSelected(mois)}
+              onClick={() => onChangeMois(mois)}
               className={isSelected(mois) ? classes.buttonSelected : ''}
               color={isSelected(mois) ? 'secondary' : 'primary'}
             >
@@ -117,6 +170,19 @@ export const Calendrier = () => {
             </Button>
           ))}
         </ButtonGroup>
+
+        <div className={classes.resultats}>
+          {legume.length ? (
+            legume.map((l) => (
+              <CalendrierCard
+                title={l.nom}
+                content={l.calendrier![moisSelected!]?.map((el) => el) as ETAPE_CALENDRIER[]}
+              />
+            ))
+          ) : (
+            <span>Rien à faire, repose toi pour être en forme pour la saison !</span>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -17,27 +17,30 @@ const useStyles = makeStyles()(() => {
 const Navbar = () => {
   const { classes } = useStyles();
   return (
-    <div className='navbar-container'>
-      <div className='left-section'>
-        <img src={""} alt='Logo' className='logo' />
-        <Link
-          color='secondary'
-          className={classes.title}
-          href='/'
-          underline='none'
-        >
+    <div className="navbar-container">
+      <div className="left-section">
+        <img src={''} alt="Logo" className="logo" />
+        <Link color="secondary" className={classes.title} href="/" underline="none">
           Mon Petit Potager
         </Link>
       </div>
-      <input type='text' placeholder='Rechercher' className='search-bar' />
-      <div className='right-section'>
+      <input type="text" placeholder="Rechercher" className="search-bar" />
+      <div className="right-section">
         <ClassicButton
-          variant='contained'
-          color='secondary'
-          size='small'
-          text='Calendrier des semis'
+          variant="contained"
+          color="secondary"
+          size="small"
+          text="Calendrier des semis"
           rounded
-          to='/calendrier'
+          to="/calendrier"
+        />
+        <ClassicButton
+          variant="contained"
+          color="secondary"
+          size="small"
+          text="Ajouter plante"
+          rounded
+          to="/admin/ajout"
         />
         {/*<button className='nav-button'>Espace personnel</button>*/}
       </div>

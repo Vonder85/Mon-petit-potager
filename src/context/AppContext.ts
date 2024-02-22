@@ -4,5 +4,5 @@ import { Legume } from '../models/Plante';
 
 export default createContext<AppState>({
   legumes: [],
-  setLegumes: (legumes: Legume[]) => [],
+  setLegumes: (legumes: Legume[]) => {},
 });

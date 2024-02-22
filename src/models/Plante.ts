@@ -1,12 +1,14 @@
 export interface Legume {
-  id: string;
+  id?: string;
   nom: string;
   description: string;
   calendrier?: CalendrierLegume;
   compagnons?: string[];
 }
 
-interface CalendrierLegume {
+export type Plante = Legume;
+
+export interface CalendrierLegume {
   Jan?: ETAPE_CALENDRIER[] | null;
   Fev?: ETAPE_CALENDRIER[] | null;
   Mar?: ETAPE_CALENDRIER[] | null;

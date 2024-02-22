@@ -1,6 +1,9 @@
-import PlanteService from "../../services/PlanteService";
+import { useContext, useEffect } from 'react';
+import PlanteService from '../../services/PlanteService';
+import AppContext from '../../context/AppContext';
 
 export const Home = () => {
-  PlanteService.getPlantes();
-  return <></>;
+  const legumes = useContext(AppContext).legumes;
+
+  return <>Nombre de légumes dans la base: {legumes.length}</>;
 };

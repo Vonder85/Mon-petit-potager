@@ -79,7 +79,7 @@ export const MultipleSelectChip = (props: MultipleSelectProps) => {
           input={<OutlinedInput id="select-multiple-chip" label={props.label} />}
           MenuProps={MenuProps}
         >
-          {props.items.map((item) => (
+          {props.items.sort().map((item) => (
             <MenuItem key={item} value={item} style={getStyles(item, items, theme)}>
               {item}
             </MenuItem>

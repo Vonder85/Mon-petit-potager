@@ -40,6 +40,7 @@ const useStyles = makeStyles()((theme: Theme) => {
 export const PlanteForm = () => {
   const { classes } = useStyles();
   const legumes = useContext(AppContext).legumes;
+  const setLegumes = useContext(AppContext).setLegumes;
 
   const [plante, setPlante] = useState<Plante>({ description: '', nom: '', calendrier: {}, compagnons: [] });
   const [calendrier, setCalendrier] = useState<CalendrierLegume>({
@@ -60,9 +61,24 @@ export const PlanteForm = () => {
    * Soumission / Ajout d'un avis
    */
   const handleSubmit = () => {
-    PlanteService.postPlante({ ...plante, calendrier }).then(() =>
-      setPlante({ description: '', nom: '', calendrier: {}, compagnons: [] }),
-    );
+    PlanteService.postPlante({ ...plante, calendrier }).then(() => {
+      setPlante({ description: '', nom: '', calendrier: {}, compagnons: [] });
+      setCalendrier({
+        Jan: null,
+        Fev: null,
+        Mar: null,
+        Avr: null,
+        Mai: null,
+        Jui: null,
+        Juil: null,
+        Aou: null,
+        Sep: null,
+        Oct: null,
+        Nov: null,
+        Dec: null,
+      });
+      setLegumes([...legumes, plante]);
+    });
   };
 
   const handleChange = (mois: keyof CalendrierLegume, etape: ETAPE_CALENDRIER) => {

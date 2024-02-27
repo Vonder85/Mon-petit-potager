@@ -1,10 +1,11 @@
 import { Box, Button, ButtonGroup, Theme } from '@mui/material';
 import { pxToRem } from '../../config/theme/utilities';
 import { makeStyles } from 'tss-react/mui';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Categorie, MOIS } from '../../models/Calendrier';
 import { CalendrierCard } from '../../components/Elements/card/calendrierCard';
 import { ETAPE_CALENDRIER, Legume } from '../../models/Plante';
+import AppContext from '../../context/AppContext';
 
 const useStyles = makeStyles()((theme: Theme) => {
   return {
@@ -42,8 +43,7 @@ const useStyles = makeStyles()((theme: Theme) => {
     },
     calendrier: {
       gridArea: 'calendrier',
-      marginRight: 'auto',
-      marginLeft: 'auto',
+      textAlign: 'center',
     },
     buttonSelected: {
       color: theme.palette.primary.main,
@@ -64,6 +64,7 @@ const useStyles = makeStyles()((theme: Theme) => {
 
 export const Calendrier = () => {
   const { classes } = useStyles();
+  const context = useContext(AppContext);
   const categories: Categorie[] = [
     {
       id: 'legumes',
@@ -76,59 +77,31 @@ export const Calendrier = () => {
   ];
   const [categorieSelected, setCategorieSelected] = useState('legumes');
   const [moisSelected, setMoisSelected] = useState<MOIS>(MOIS.FEVRIER);
-  const [legume, setLegumes] = useState<Legume[]>([]);
-  const [data, setData] = useState<Legume[]>([
-    {
-      id: '1',
-      description: "L'aubergine est un légume violet",
-      nom: 'Aubergine',
-      calendrier: {
-        Jan: [ETAPE_CALENDRIER.SEMIS_EN_POT, ETAPE_CALENDRIER.SEMIS_PLEINE_TERRE],
-        Mar: [ETAPE_CALENDRIER.PLANTATION, ETAPE_CALENDRIER.RECOLTE],
-      },
-    },
-    {
-      id: '2',
-      description: 'La courgette est un légume vert',
-      nom: 'Courgette',
-      calendrier: {
-        Fev: [ETAPE_CALENDRIER.SEMIS_EN_POT],
-        Mar: [ETAPE_CALENDRIER.PLANTATION, ETAPE_CALENDRIER.RECOLTE],
-      },
-    },
-    {
-      id: '3',
-      description: 'La courgette est un légume vert',
-      nom: 'Courgette',
-      calendrier: {
-        Fev: [ETAPE_CALENDRIER.SEMIS_EN_POT],
-        Mar: [ETAPE_CALENDRIER.PLANTATION, ETAPE_CALENDRIER.RECOLTE],
-        Mai: [ETAPE_CALENDRIER.SEMIS_EN_POT],
-      },
-    },
-    {
-      id: '4',
-      description: 'La courgette est un légume vert',
-      nom: 'Courgette',
-      calendrier: {
-        Fev: [ETAPE_CALENDRIER.SEMIS_EN_POT],
-        Mar: [ETAPE_CALENDRIER.PLANTATION, ETAPE_CALENDRIER.RECOLTE],
-        Mai: [ETAPE_CALENDRIER.SEMIS_EN_POT],
-      },
-    },
-  ]);
+  const [legumes, setLegumes] = useState<Legume[]>([]);
 
   const isSelected = (categorie: string): boolean => {
     return moisSelected === categorie || categorie === categorieSelected;
   };
 
   useEffect(() => {
-    setLegumes(data.filter((l) => l.calendrier && l.calendrier[moisSelected!]?.length! > 0));
+    setLegumes(
+      context.legumes
+        .filter((l) => l.calendrier && l.calendrier[moisSelected!]?.length! > 0)
+        .sort(function (a, b) {
+          if (a.nom > b.nom) {
+            return 1;
+          }
+          if (a.nom < b.nom) {
+            return -1;
+          }
+          return 0;
+        }),
+    );
   }, [moisSelected]);
 
   const onChangeMois = (mois: MOIS) => {
     setMoisSelected(mois);
-    setLegumes(data.filter((l) => l.calendrier && l.calendrier[mois!]?.length! > 0));
+    setLegumes(context.legumes.filter((l) => l.calendrier && l.calendrier[mois!]?.length! > 0));
   };
 
   return (
@@ -172,8 +145,8 @@ export const Calendrier = () => {
         </ButtonGroup>
 
         <div className={classes.resultats}>
-          {legume.length ? (
-            legume.map((l) => (
+          {legumes.length ? (
+            legumes.map((l) => (
               <CalendrierCard
                 title={l.nom}
                 content={l.calendrier![moisSelected!]?.map((el) => el) as ETAPE_CALENDRIER[]}
